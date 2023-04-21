@@ -9,7 +9,7 @@
         <div class="txt_field">
           <input type="text" required v-model="user.name"/>
           <span></span>
-          <label>Họ và tên</label>
+          <label>Họ và tên Duong</label>
         </div>
         <div class="txt_field">
           <input type="text" v-model="user.phone"/>
