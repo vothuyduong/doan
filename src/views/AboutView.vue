@@ -8,10 +8,10 @@
                 <ul>
                     <li><router-link :to="{ name: 'home' }">Trang chủ</router-link></li>
                     <li>
-                        <router-link :to="{ name: 'product' }" class="mau-chon">Sản phẩm</router-link>
+                        <router-link :to="{ name: 'product' }">Sản phẩm</router-link>
                     </li>
                     <li>
-                        <router-link :to="{ name: 'about' }">Về chúng tôi</router-link>
+                        <router-link :to="{ name: 'about' }" class="mau-chon">Về chúng tôi</router-link>
                     </li>
                     <li>
                         <router-link :to="{ name: 'donation' }">Quyên góp</router-link>
@@ -35,79 +35,28 @@
         </div>
     </div>
 
-    <div class="smalll-container">
-        <div class="row" style="margin-bottom: 30px;">
-            <div class="col-6">
-                <h2>Tất cả sản phẩm</h2>
-            </div>
-            <div class="col-6">
-                <div class="input-group rounded">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                        aria-describedby="search-addon" v-model="search" />
-                    <span class="input-group-text border-0" id="search-addon" @click="searchProduct()">
-                        <i class="fas fa-search"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row choose-select mb-5">
-            <div class="col-6">
-                <select v-model="category" @change="getCate($event)">
-                    <option value="">Danh mục</option>
-                    <option v-for="(cate, index) in categories" :key="index" :value="cate.idCategory">{{ cate.nameCategory
-                    }}</option>
-                </select>
-            </div>
-            <div class="col-6">
-                <select v-model="size" @change="getSize($event)">
-                    <option value="">Kích thước</option>
-                    <option v-for="(size, index) in sizes" :key="index" :value="size.idSize">{{ size.nameSize }}</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row mb-5 mt-3">
-            <div class="row">
-                <div class="col-4" v-for="(pro, index) in products" :key="index">
-                    <div v-if="index <= 2" @click="getDetail(pro.idProduct)">
-                        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 300px; height: 350px;" />
-                        <div style="text-align: center;">
-                            <h4>{{ pro.nameProduct }}</h4>
-                            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-5">
-            <div class="row">
-                <div class="col-4" v-for="(pro, index) in products" :key="index">
-                    <div v-if="index > 2 && index <= 5" @click="getDetail(pro.idProduct)">
-                        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 300px; height: 350px;" />
-                        <div style="text-align: center;">
-                            <h4>{{ pro.nameProduct }}</h4>
-                            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="small-container" style="margin-bottom: 20px;">
+        <div class="title-2">
+            <h2 style="margin: 50px 0px;">Khi bạn đến với chúng tôi, bạn cần phải chú ý?</h2>
         </div>
         <div class="row">
-            <div class="row">
-                <div class="col-4" v-for="(pro, index) in products" :key="index">
-                    <div v-if="index > 5 && index <= 8" @click="getDetail(pro.idProduct)">
-                        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 300px; height: 350px;" />
-                        <div style="text-align: center;">
-                            <h4>{{ pro.nameProduct }}</h4>
-                            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="page-btn">
-            <span v-for="(page, index) in totalPage" :key="index" @click="loadPage(page)">{{ page }}</span>
+            <p><b><u>1. Những lưu ý về sản phẩm quyên góp:</u></b></p>
+            <p>- Tâm An ưu tiên quần áo từ 18-45 tuổi, đa dạng màu sắc và chất liệu.</p>
+            <p>- Quần áo phải có nhãn hiệu, thuộc danh mục định giá sản phẩm trên website với số lượng không hạn chế.</p>
+            <p>- Quần áo không quá cũ, không rách, sờn, tuột chỉ, không có vết ố, không bị lem màu, không hư khóa, không đứt,
+                thiếu cúc...</p>
+            <p>- Ngoài quần áo Tâm An còn có thể nhận các sản phẩm khác nếu bạn cần Tâm An xử lý chúng.</p>
+
+            <p><b><u>2. Tiến trình hoàn trả trong trường hợp quần áo không đủ tiêu chuẩn:</u></b></p>
+            <p>- Giai đoạn 1: THÔNG TIN - Tâm An sẽ thông tin đến bạn về tình trạng của sản phẩm không đủ tiêu chuẩn qua
+                tin nhắn.</p>
+            <p>- Giai đoạn 2: XÁC NHẬN - Khách hàng vui lòng phản hồi tin nhắn sẽ nhận hàng hoặc từ chối nhận hàng.</p>
+            <p>- Giai đoạn 3 : HOÀN TRẢ:</p>
+            <p>+ Cách 1: Khách hàng tự đến lấy tại địa chỉ 15 Phạm Như Xương.</p>
+            <p>+ Cách 2: Sau khi xác nhận sẽ nhận hoàn trả, Tâm An sẽ cử cộng tác viên giao đến cho khách hàng.</p>
+
+            <p>Lưu ý: đối với sản phẩm hoàn trả, trong vòng thời gian 1 tuần nếu khách hàng không đến nhận hoặc không xác
+                nhận hoàn trả, Tâm An sẽ không giải quyết.</p>
         </div>
     </div>
 
@@ -143,33 +92,18 @@
         </div>
     </div>
 </template>
-
+  
 <script>
-import size from '@/api/size.js'
-import category from '@/api/category.js'
-import product from '@/api/product.js'
-import router from '@/router/index.js'
 
 export default {
     data() {
         return {
             username: '',
             displaynone: false,
-            sizes: [],
-            categories: [],
-            products: [],
-            pageCurrent: 1,
-            totalPage: 1,
-            search: '',
-            category: '',
-            size: ''
         }
     },
     created() {
         this.getUsername();
-        this.getListSize();
-        this.getListCategory();
-        this.getListProduct();
     },
     methods: {
         getUsername() {
@@ -183,52 +117,15 @@ export default {
             localStorage.removeItem("username");
             this.username = '';
         },
-        async getListSize() {
-            this.sizes = (await size.getAll()).data;
-        },
-        async getListCategory() {
-            this.categories = (await category.getAll()).data;
-        },
-        async getListProduct() {
-            let res = await product.getProductList({});
-            this.products = res.data;
-            this.pageCurrent = res.current_page;
-            this.totalPage = res.total_pages;
-        },
-        async loadPage(page) {
-            let response = await product.getProductList({ pageCurrent: page });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        async searchProduct() {
-            let response = await product.getProductList({ keySearch: this.search });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        async getCate(e) {
-            let va = e.target.value;
-            let response = await product.getProductList({ idCategory: va });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        async getSize(e) {
-            let va = e.target.value;
-            let response = await product.getProductList({ idSize: va });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        getDetail(idProduct) {
-            router.push({ name: 'product-detail', params: { id: idProduct } });
-        }
     }
 };
 </script>
-
+  
 <style scoped>
+.mar-10 {
+    margin-top: 50px;
+}
+
 .logo img {
     width: 125px;
 }
@@ -236,6 +133,11 @@ export default {
 nav img {
     width: 30px;
     height: 30px;
+}
+
+.size-image {
+    width: 300px;
+    height: 350px;
 }
 
 .navbar {
@@ -259,7 +161,7 @@ nav ul li {
     margin-right: 20px;
 }
 
-nav ul li a {
+a {
     text-decoration: none;
     color: #555;
 }
@@ -292,7 +194,7 @@ p {
     padding: 50px 0;
 }
 
-.col-2 h1 {
+.col-6 h1 {
     font-size: 50px;
     line-height: 60px;
     margin: 25px 0;
@@ -307,6 +209,11 @@ p {
     border-radius: 30px;
     transition: 0.5s;
 }
+
+.mau-chon {
+    color: #ff523b;
+}
+
 
 .btn:hover {
     background: #563434;
@@ -334,16 +241,11 @@ p {
     width: 100%;
 }
 
-.smalll-container {
+.small-container {
     max-width: 1080px;
     margin: auto;
     padding-left: 25px;
     padding-right: 25px;
-    margin-top: 100px;
-}
-
-.smalll-container .choose-select {
-    margin: 20px 0px;
 }
 
 .coll-4 {
@@ -383,7 +285,7 @@ h4 {
     font-weight: normal;
 }
 
-.col-4 p {
+.coll-4 p {
     font-size: 14px;
 }
 
@@ -510,10 +412,6 @@ select:focus {
     margin: 0 auto 80px;
 }
 
-.mau-chon {
-    color: #ff523b;
-}
-
 .page-btn span {
     display: inline-block;
     border: 1px solid #ff523b;
@@ -529,4 +427,41 @@ select:focus {
     background: #ff523b;
     color: #fff;
 }
-</style>
+
+.single-product {
+    margin-top: 80px;
+}
+
+.single-product .col-2 img {
+    padding: 0;
+    width: 100%;
+}
+
+.single-product .col-2 {
+    padding: 20px;
+}
+
+.single-product h4 {
+    margin: 20px 0;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.single-product select {
+    display: block;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.single-product input {
+    width: 50px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 20px;
+    margin-right: 10px;
+    border: 1px solid #ff523b;
+}
+
+input:focus {
+    outline: none;
+}</style>

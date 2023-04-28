@@ -8,13 +8,13 @@
                 <ul>
                     <li><router-link :to="{ name: 'home' }">Trang chủ</router-link></li>
                     <li>
-                        <router-link :to="{ name: 'product' }" class="mau-chon">Sản phẩm</router-link>
+                        <router-link :to="{ name: 'product' }">Sản phẩm</router-link>
                     </li>
                     <li>
                         <router-link :to="{ name: 'about' }">Về chúng tôi</router-link>
                     </li>
                     <li>
-                        <router-link :to="{ name: 'donation' }">Quyên góp</router-link>
+                        <router-link :to="{ name: 'donation' }" class="mau-chon">Quyên góp</router-link>
                     </li>
                     <li v-if="this.username">
                         <div class="dropdown">
@@ -35,79 +35,35 @@
         </div>
     </div>
 
-    <div class="smalll-container">
-        <div class="row" style="margin-bottom: 30px;">
-            <div class="col-6">
-                <h2>Tất cả sản phẩm</h2>
-            </div>
-            <div class="col-6">
-                <div class="input-group rounded">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                        aria-describedby="search-addon" v-model="search" />
-                    <span class="input-group-text border-0" id="search-addon" @click="searchProduct()">
-                        <i class="fas fa-search"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row choose-select mb-5">
-            <div class="col-6">
-                <select v-model="category" @change="getCate($event)">
-                    <option value="">Danh mục</option>
-                    <option v-for="(cate, index) in categories" :key="index" :value="cate.idCategory">{{ cate.nameCategory
-                    }}</option>
-                </select>
-            </div>
-            <div class="col-6">
-                <select v-model="size" @change="getSize($event)">
-                    <option value="">Kích thước</option>
-                    <option v-for="(size, index) in sizes" :key="index" :value="size.idSize">{{ size.nameSize }}</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row mb-5 mt-3">
-            <div class="row">
-                <div class="col-4" v-for="(pro, index) in products" :key="index">
-                    <div v-if="index <= 2" @click="getDetail(pro.idProduct)">
-                        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 300px; height: 350px;" />
-                        <div style="text-align: center;">
-                            <h4>{{ pro.nameProduct }}</h4>
-                            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-5">
-            <div class="row">
-                <div class="col-4" v-for="(pro, index) in products" :key="index">
-                    <div v-if="index > 2 && index <= 5" @click="getDetail(pro.idProduct)">
-                        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 300px; height: 350px;" />
-                        <div style="text-align: center;">
-                            <h4>{{ pro.nameProduct }}</h4>
-                            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="small-container" style="margin-bottom: 20px;">
+        <div class="title-2">
+            <h2 style="margin: 50px 0px;">Thêm thông tin quyên góp</h2>
         </div>
         <div class="row">
-            <div class="row">
-                <div class="col-4" v-for="(pro, index) in products" :key="index">
-                    <div v-if="index > 5 && index <= 8" @click="getDetail(pro.idProduct)">
-                        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 300px; height: 350px;" />
-                        <div style="text-align: center;">
-                            <h4>{{ pro.nameProduct }}</h4>
-                            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
-                        </div>
-                    </div>
+            <p style="color: red;">{{ this.message }}</p>
+            <form @submit.prevent="save">
+                <div class="mb-3">
+                    <label for="full-name" class="form-label">Họ và tên: </label>
+                    <input type="text" class="form-control" id="full-name" v-model="donation.fullName">
                 </div>
-            </div>
-        </div>
-        <div class="page-btn">
-            <span v-for="(page, index) in totalPage" :key="index" @click="loadPage(page)">{{ page }}</span>
+                <div class="mb-3">
+                    <label for="phone-number" class="form-label">Số điện thoại: </label>
+                    <input type="text" class="form-control" id="phone-number" v-model="donation.phone">
+                </div>
+                <div class="mb-3">
+                    <label for="get-address" class="form-label">Địa chỉ lấy: </label>
+                    <input type="text" class="form-control" id="get-address" v-model="donation.getAddress">
+                </div>
+                <div class="mb-3">
+                    <label for="get-address" class="form-label">Thời gian lấy: </label>
+                    <input id="startDate" class="form-control" type="date" v-model="donation.getTime"/>
+                </div>
+                <div class="form-group">
+                    <label for="decription">Mô tả: </label>
+                    <textarea class="form-control" id="decription" rows="3" v-model="donation.description"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Gửi</button>
+            </form>
         </div>
     </div>
 
@@ -143,33 +99,28 @@
         </div>
     </div>
 </template>
-
+  
 <script>
-import size from '@/api/size.js'
-import category from '@/api/category.js'
-import product from '@/api/product.js'
-import router from '@/router/index.js'
+import dona from '@/api/donation.js'
 
 export default {
     data() {
         return {
             username: '',
             displaynone: false,
-            sizes: [],
-            categories: [],
-            products: [],
-            pageCurrent: 1,
-            totalPage: 1,
-            search: '',
-            category: '',
-            size: ''
+            donation: {
+                "fullName": "",
+                "phone": "",
+                "getAddress": "",
+                "getTime": "",
+                "description":"",
+                "status": "Chờ xác nhận"
+            },
+            message: ""
         }
     },
     created() {
         this.getUsername();
-        this.getListSize();
-        this.getListCategory();
-        this.getListProduct();
     },
     methods: {
         getUsername() {
@@ -183,52 +134,23 @@ export default {
             localStorage.removeItem("username");
             this.username = '';
         },
-        async getListSize() {
-            this.sizes = (await size.getAll()).data;
-        },
-        async getListCategory() {
-            this.categories = (await category.getAll()).data;
-        },
-        async getListProduct() {
-            let res = await product.getProductList({});
-            this.products = res.data;
-            this.pageCurrent = res.current_page;
-            this.totalPage = res.total_pages;
-        },
-        async loadPage(page) {
-            let response = await product.getProductList({ pageCurrent: page });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        async searchProduct() {
-            let response = await product.getProductList({ keySearch: this.search });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        async getCate(e) {
-            let va = e.target.value;
-            let response = await product.getProductList({ idCategory: va });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        async getSize(e) {
-            let va = e.target.value;
-            let response = await product.getProductList({ idSize: va });
-            this.products = response.data;
-            this.totalPage = response.total_pages;
-            this.currentPage = response.current_page;
-        },
-        getDetail(idProduct) {
-            router.push({ name: 'product-detail', params: { id: idProduct } });
+        async save() {
+            let response = await dona.save(this.donation);
+            if (response.status === 200) {
+                this.message = "Thêm thông tin quyên góp thành công!";
+            } else {
+                this.message = "Thêm thông tin quyên góp thất bại!";
+            }
         }
     }
 };
 </script>
-
+  
 <style scoped>
+.mar-10 {
+    margin-top: 50px;
+}
+
 .logo img {
     width: 125px;
 }
@@ -236,6 +158,11 @@ export default {
 nav img {
     width: 30px;
     height: 30px;
+}
+
+.size-image {
+    width: 300px;
+    height: 350px;
 }
 
 .navbar {
@@ -259,7 +186,7 @@ nav ul li {
     margin-right: 20px;
 }
 
-nav ul li a {
+a {
     text-decoration: none;
     color: #555;
 }
@@ -292,7 +219,7 @@ p {
     padding: 50px 0;
 }
 
-.col-2 h1 {
+.col-6 h1 {
     font-size: 50px;
     line-height: 60px;
     margin: 25px 0;
@@ -307,6 +234,11 @@ p {
     border-radius: 30px;
     transition: 0.5s;
 }
+
+.mau-chon {
+    color: #ff523b;
+}
+
 
 .btn:hover {
     background: #563434;
@@ -334,16 +266,11 @@ p {
     width: 100%;
 }
 
-.smalll-container {
+.small-container {
     max-width: 1080px;
     margin: auto;
     padding-left: 25px;
     padding-right: 25px;
-    margin-top: 100px;
-}
-
-.smalll-container .choose-select {
-    margin: 20px 0px;
 }
 
 .coll-4 {
@@ -383,7 +310,7 @@ h4 {
     font-weight: normal;
 }
 
-.col-4 p {
+.coll-4 p {
     font-size: 14px;
 }
 
@@ -510,10 +437,6 @@ select:focus {
     margin: 0 auto 80px;
 }
 
-.mau-chon {
-    color: #ff523b;
-}
-
 .page-btn span {
     display: inline-block;
     border: 1px solid #ff523b;
@@ -528,5 +451,43 @@ select:focus {
 .page-btn span:hover {
     background: #ff523b;
     color: #fff;
+}
+
+.single-product {
+    margin-top: 80px;
+}
+
+.single-product .col-2 img {
+    padding: 0;
+    width: 100%;
+}
+
+.single-product .col-2 {
+    padding: 20px;
+}
+
+.single-product h4 {
+    margin: 20px 0;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.single-product select {
+    display: block;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.single-product input {
+    width: 50px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 20px;
+    margin-right: 10px;
+    border: 1px solid #ff523b;
+}
+
+input:focus {
+    outline: none;
 }
 </style>

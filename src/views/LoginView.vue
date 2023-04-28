@@ -44,10 +44,8 @@ export default {
     async login() {
       let response = await api.login(this.user);
       console.log(response);
-      if(response.status === 500) {
-        this.messager = "Đăng nhập thất bại!";
-      } else if(response.status === 400) {
-        this.messager = "Tên đăng nhập hoặc mật khẩu không đúng!"
+      if(response.status === 500 || response.status === 400) {
+        this.messager = "Tên đăng nhập hoặc mật khẩu không đúng!";
       } else {
         localStorage.setItem("jwt", response.data.token);
         localStorage.setItem("username", response.data.username);

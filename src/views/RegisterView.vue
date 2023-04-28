@@ -7,22 +7,22 @@
           <p>{{ this.messager }}</p>
         </div>
         <div class="txt_field">
-          <input type="text" required v-model="user.name"/>
+          <input type="text" required v-model="user.name" />
           <span></span>
-          <label>Họ và tên Duong</label>
+          <label>Họ và tên</label>
         </div>
         <div class="txt_field">
-          <input type="text" v-model="user.phone"/>
+          <input type="text" v-model="user.phone" />
           <span></span>
           <label>Số điện thoại</label>
         </div>
         <div class="txt_field">
-          <input type="text" v-model="user.address"/>
+          <input type="text" v-model="user.address" />
           <span></span>
           <label>Địa chỉ</label>
         </div>
         <div class="txt_field">
-          <input type="text" required v-model="user.username"/>
+          <input type="text" required v-model="user.username" />
           <span></span>
           <label>Tên đăng nhập</label>
         </div>
@@ -61,12 +61,14 @@ export default {
     async register() {
       let response = await api.register(this.user);
       console.log(response);
-      if(response.status === 500) {
+      if (response.status === 500) {
         this.messager = "Lỗi server!";
-      } else if(response.status === 400) {
-        this.messager = "Tạo tài khoản thất bại!"
+      } else if (response.status === 400 && response.message === "username.exists") {
+        this.messager = "Tên đăng nhập đã tồn tại!";
+      } else if (response.status === 400 && response.message !== "username.exists") {
+        this.messager = "Thông tin nhập không hợp lệ!";
       } else {
-        this.$router.push({name: "login"});
+        this.$router.push({ name: "login" });
       }
     }
   }
@@ -80,6 +82,7 @@ export default {
   height: 100vh;
   overflow: hidden;
 }
+
 .center {
   position: absolute;
   top: 50%;
@@ -89,24 +92,28 @@ export default {
   background: white;
   border-radius: 10px;
 }
+
 .center h1 {
   text-align: center;
   padding: 10px 0 20px 0;
   border-bottom: 1px solid silver;
 }
+
 .center .mess-err p {
- color: red;
+  color: red;
 }
 
 .center form {
   padding: 0 40px;
   box-sizing: border-box;
 }
+
 form .txt_field {
   position: relative;
   border-bottom: 2px solid #adadad;
   margin: 30px 0;
 }
+
 .txt_field input {
   width: 100%;
   padding: 0 5px;
@@ -116,6 +123,7 @@ form .txt_field {
   background: none;
   outline: none;
 }
+
 .txt_field label {
   position: absolute;
   top: 50%;
@@ -126,6 +134,7 @@ form .txt_field {
   pointer-events: none;
   transition: 0.5s;
 }
+
 .txt_field span::before {
   content: "";
   position: absolute;
@@ -136,23 +145,28 @@ form .txt_field {
   background: #35bd14ad;
   transition: 0.5s;
 }
-.txt_field input:focus ~ label,
-.txt_field input:valid ~ label {
+
+.txt_field input:focus~label,
+.txt_field input:valid~label {
   top: -5px;
   color: #35bd14ad;
 }
-.txt_field input:focus ~ span::before,
-.txt_field input:valid ~ span::before {
+
+.txt_field input:focus~span::before,
+.txt_field input:valid~span::before {
   width: 100%;
 }
+
 .pass {
   margin: -5px 0 20px 5px;
   color: #a6a6a6;
   cursor: pointer;
 }
+
 .pass:hover {
   text-decoration: underline;
 }
+
 input[type="submit"] {
   width: 100%;
   height: 50px;
@@ -165,21 +179,24 @@ input[type="submit"] {
   cursor: pointer;
   outline: none;
 }
+
 input[type="submit"]:hover {
   border-color: #35bd14ad;
   transition: 0.5s;
 }
+
 .signup_link {
   margin: 30px 0;
   text-align: center;
   font-size: 16px;
   color: #666666;
 }
+
 .signup_link a {
   color: #35bd14ad;
   text-decoration: none;
 }
+
 .signup_link a:hover {
   text-decoration: underline;
-}
-</style>
+}</style>

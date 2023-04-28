@@ -7,12 +7,16 @@
         </div>
         <nav>
           <ul>
-            <li><router-link :to="{ name: 'home' }">Trang chủ</router-link></li>
+            <li><router-link :to="{ name: 'home' }" class="mau-chon">Trang chủ</router-link></li>
             <li>
               <router-link :to="{ name: 'product' }">Sản phẩm</router-link>
             </li>
-            <li><a href="">Về chúng tôi</a></li>
-            <li><a href="">Liên hệ</a></li>
+            <li>
+              <router-link :to="{ name: 'about' }">Về chúng tôi</router-link>
+            </li>
+            <li>
+              <router-link :to="{ name: 'donation' }">Quyên góp</router-link>
+            </li>
             <li v-if="this.username">
               <div class="dropdown">
                 <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -34,14 +38,14 @@
         <div class="col-2">
           <h1>
             Hãy đến với chúng tôi<br />
-            Tủ quần áo Tâm An
+            <span class="mau-chon"> Tủ quần áo TÂM AN</span>
           </h1>
           <p>
             Tuy ở đây toàn đồ đã qua sử dụng nhưng chúng tôi đảm bảo chất lượng
             quần áo vẫn đảm bảo: <br />
             Sạch, đẹp và thời trang.
           </p>
-          <a href="" class="btn">Xem ngay &#8594;</a>
+          <router-link class="btn" :to="{ name: 'product' }">Xem ngay &#8594;</router-link>
         </div>
         <div class="col-2">
           <img src="../assets/slide2.png" alt="" />
@@ -52,27 +56,28 @@
 
   <div class="testimonial">
     <div class="small-container">
+      <h2 class="title">Hoạt động chính</h2>
       <div class="row">
         <div class="col-3">
+          <h3>THU GOM QUẦN ÁO</h3>
+          <img src="../assets/logo.png" alt="" />
           <p>
             Khi nhận được đơn quyên góp, tổ chức sẽ cử cộng tác viên đến địa
             điểm lấy đồ.
           </p>
-          <img src="../assets/logo.png" alt="" />
-          <h3>Thu gom quần áo</h3>
         </div>
         <div class="col-3">
+          <h3>GÂY QUỸ</h3>
+          <img src="../assets/logo.png" alt="" />
           <p>Quần áo sau khi thu gom, làm sạch sẽ đem lên website bán.</p>
-          <img src="../assets/logo.png" alt="" />
-          <h3>Gây quỹ</h3>
         </div>
         <div class="col-3">
+          <h3>TRAO TẶNG</h3>
+          <img src="../assets/logo.png" alt="" />
           <p>
             Tổ chức sẽ tiếp nhận thông tin người cần nhận và trao tận tay đến
             họ.
           </p>
-          <img src="../assets/logo.png" alt="" />
-          <h3>Trao tặng</h3>
         </div>
       </div>
     </div>
@@ -83,31 +88,27 @@
     <div class="row">
       <div class="col-4" v-for="(pro, index) in productNews" :key="index">
         <div v-if="index <= 3" @click="getDetail(pro.idProduct)">
-          <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" />
-          <h4>{{ pro.nameProduct }}</h4>
-          <p>{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+          <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 260px; height: 300px;" />
+          <div style="text-align: center;">
+            <h4>{{ pro.nameProduct }}</h4>
+            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <h2 class="title">Sản phẩm mới nhất</h2>
-  <div class="row">
-    <div class="col-4" v-for="(pro, index) in productNews" :key="index">
-      <div v-if="index <= 3" @click="getDetail(pro.idProduct)">
-        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" />
-        <h4>{{ pro.nameProduct }}</h4>
-        <p>{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-4" v-for="(pro, index) in productNews" :key="index">
-      <div v-if="index >= 4" @click="getDetail(pro.idProduct)">
-        <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" />
-        <h4>{{ pro.nameProduct }}</h4>
-        <p>{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+  <div class="small-container">
+    <h2 class="title">Sản phẩm mới nhất</h2>
+    <div class="row">
+      <div class="col-4" v-for="(pro, index) in productNews" :key="index">
+        <div @click="getDetail(pro.idProduct)">
+          <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 260px; height: 300px;" />
+          <div style="text-align: center;">
+            <h4>{{ pro.nameProduct }}</h4>
+            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -295,7 +296,7 @@ nav img {
 }
 
 .small-container {
-  max-width: 1080px;
+  max-width: 1200px;
   margin: auto;
   padding-left: 25px;
   padding-right: 25px;
@@ -333,6 +334,10 @@ nav img {
   transform: translateX(-50%);
 }
 
+.mau-chon {
+  color: #ff523b;
+}
+
 h4 {
   color: #555;
   font-weight: normal;
@@ -358,6 +363,7 @@ small {
 
 .testimonial {
   padding-top: 100px;
+  margin-bottom: 30px;
 }
 
 .testimonial .col-3 {
@@ -386,7 +392,7 @@ small {
 
 .testimonial .col-3 h3 {
   font-weight: 600;
-  color: #555;
+  color: #ff523b;
   font-size: 16px;
 }
 

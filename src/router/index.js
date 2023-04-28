@@ -5,6 +5,8 @@ import HomeView from '../views/HomeView.vue'
 import ProductView from '../views/ProductView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 import CartView from '@/views/CartView.vue'
+import AboutView from '@/views/AboutView.vue'
+import DonationView from '@/views/DonationView.vue'
 
 import AdminView from '@/views/AdminView.vue'
 import AdminHomeView from '@/components/AdminHomeView.vue'
@@ -37,7 +39,7 @@ const routes = [
     component: RegisterView
   },
   {
-    path: '/',
+    path: '/taman',
     name: 'home',
     component: HomeView
   },
@@ -55,6 +57,18 @@ const routes = [
     path: '/giohang',
     name: 'cart',
     component: CartView
+  },
+
+  {
+    path: '/vechungtoi',
+    name: 'about',
+    component: AboutView
+  },
+
+  {
+    path: '/themthongtinquyengop',
+    name: 'donation',
+    component: DonationView
   },
 
   {

@@ -10,8 +10,12 @@
           <li>
             <router-link :to="{ name: 'product' }">Sản phẩm</router-link>
           </li>
-          <li><a href="">Về chúng tôi</a></li>
-          <li><a href="">Liên hệ</a></li>
+          <li>
+            <router-link :to="{ name: 'about' }">Về chúng tôi</router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'donation' }">Quyên góp</router-link>
+          </li>
           <li v-if="this.username">
             <div class="dropdown">
               <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -34,18 +38,17 @@
   <div class="small-container single-product">
     <div class="row">
       <div class="col-6">
-        <img :src="('data:image/jpeg;base64,' + product.base64)" alt="" style="width: 300px; height: 350px;"
+        <img :src="('data:image/jpeg;base64,' + product.base64)" alt="" style="width: 400px; height: 450px;"
           id="product-img" />
       </div>
       <div class="col-6">
         <h1>{{ product.nameProduct }}</h1>
         <h4>{{ product.priceMin }} - {{ product.priceMax }} VND</h4>
-        <select v-model="this.size">
-          <option value="">Kích thước</option>
+        <p><select v-model="this.size">
           <option v-for="(size, index) in sizes" :key="index" :value="size.idSize">{{ size.nameSize }}</option>
-        </select>
-        <input type="number" value="1" />
-        <a href="" class="btn">Thêm vào giỏ hàng</a>
+        </select></p>
+        Số lượng <input type="number" v-model="quantity"/>
+        <p><a href="#" class="btn" @click="addCart()">Thêm vào giỏ hàng</a></p>
 
         <h3>Mô tả</h3>
         <p>{{ product.description }}</p>
@@ -53,8 +56,8 @@
     </div>
   </div>
 
-  <div class="small-container">
-    <h2 class="mar-10">Sản phẩm liên quan</h2>
+  <div class="small-container" style="margin-bottom: 40px;">
+    <h2 class="mar-10" style="margin-bottom: 10px;">Sản phẩm liên quan</h2>
 
     <div class="row">
       <div class="col-4" v-for="(pro, index) in productLQ" :key="index">
@@ -62,7 +65,7 @@
           <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" class="size-image" />
           <div style="text-align: center;">
             <h4>{{ pro.nameProduct }}</h4>
-            <p>{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
           </div>
         </div>
       </div>
@@ -105,6 +108,7 @@
 <script>
 import product from '@/api/product.js'
 import size from '@/api/size.js'
+import cart from '@/api/cart.js'
 
 export default {
   data() {
@@ -120,7 +124,9 @@ export default {
         "description": "",
         "base64": ""
       },
-      size: ''
+      sizes: [],
+      size: "",
+      quantity: "1", 
     }
   },
   created() {
@@ -156,6 +162,16 @@ export default {
       this.productLQ = res.data;
       let dt = await product.getDetailProduct({ idProduct: idd });
       this.product = dt.data;
+    },
+    async addCart() {
+      let res = await cart.save({"idProduct": this.product.idProduct, "idSize": this.size, "quantity": this.quantity});
+      if (res.status === 200) {
+        alert('Thêm vào giỏ hàng thành công!');
+      } else if(res.status === 401) {
+        alert('Bạn cần đăng nhập để thực hiện chức năng này!');
+      } else {
+        alert('Thêm vào giỏ hàng thất bại!');
+      }
     }
   }
 };
@@ -173,6 +189,10 @@ export default {
 nav img {
   width: 30px;
   height: 30px;
+}
+
+.mau-chon {
+  color: #ff523b;
 }
 
 .size-image {

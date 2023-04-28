@@ -10,8 +10,12 @@
           <li>
             <router-link :to="{ name: 'product' }">Sản phẩm</router-link>
           </li>
-          <li><a href="">Về chúng tôi</a></li>
-          <li><a href="">Liên hệ</a></li>
+          <li>
+            <router-link :to="{ name: 'about' }">Về chúng tôi</router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'donation' }">Quyên góp</router-link>
+          </li>
           <li v-if="this.username">
             <div class="dropdown">
               <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -31,54 +35,28 @@
     </div>
   </div>
 
-  <div class="small-container cart-page">
+  <div v-if="products.length > 0" class="small-container cart-page" style="min-height: 400px;">
     <table>
       <tr>
         <th>Sản phẩm</th>
         <th>Số lượng</th>
         <th>Thành tiền</th>
       </tr>
-      <tr>
+      <tr v-for="(item, index) in products" :key="index">
         <td>
           <div class="cart-info">
-            <img src="../assets/logo.png" alt="" />
+            <img :src="('data:image/jpeg;base64,' + item.base64)" alt="" />
             <div>
-              <p>Tên sản phẩm</p>
-              <small>Giá: 50000</small><br />
-              <a href="">Xóa</a>
+              <p>{{ item.nameProduct }}</p>
+              <small>Giá: {{ item.price }} VND</small><br />
+              <a href="#" @click="del(item.idProduct, item.idSize)">Xóa</a>
             </div>
           </div>
         </td>
-        <td><input type="number" value="1" /></td>
-        <td>50000</td>
-      </tr>
-      <tr>
         <td>
-          <div class="cart-info">
-            <img src="../assets/logo.png" alt="" />
-            <div>
-              <p>Tên sản phẩm</p>
-              <small>Giá: 50000</small><br />
-              <a href="">Xóa</a>
-            </div>
-          </div>
+          <input type="number" :value="item.quantity" style="width: 60px;" @change="updateQuantity(item.idProduct, item.idSize, $event)"  />
         </td>
-        <td><input type="number" value="1" /></td>
-        <td>50000</td>
-      </tr>
-      <tr>
-        <td>
-          <div class="cart-info">
-            <img src="../assets/logo.png" alt="" />
-            <div>
-              <p>Tên sản phảm</p>
-              <small>Giá: 50000</small><br />
-              <a href="">Xóa</a>
-            </div>
-          </div>
-        </td>
-        <td><input type="number" value="1" /></td>
-        <td>50000</td>
+        <td>{{ item.price * item.quantity }}</td>
       </tr>
     </table>
 
@@ -86,10 +64,21 @@
       <table>
         <tr>
           <td>Tổng cộng</td>
-          <td>200</td>
+          <td>{{ Sum }}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <router-link class="btn" :to="{ name: 'product' }">Đặt hàng &#8594;</router-link>
+          </td>
         </tr>
       </table>
     </div>
+  </div>
+  <div v-if="products.length <= 0" class="small-container cart-page" style="min-height: 500px;">
+    <center>
+      <h1>Giỏ hàng rỗng!</h1>
+    </center>
   </div>
 
   <div class="footer">
@@ -126,15 +115,19 @@
 </template>
 
 <script>
+import cart from '@/api/cart.js'
+
 export default {
   data() {
     return {
       username: '',
       displaynone: false,
+      products: [],
     }
   },
   created() {
     this.getUsername();
+    this.getAll();
   },
   methods: {
     getUsername() {
@@ -147,6 +140,41 @@ export default {
       localStorage.removeItem("jwt");
       localStorage.removeItem("username");
       this.username = '';
+    },
+    async getAll() {
+      let res = await cart.getDetail();
+      this.products = res.data;
+    },
+    async del(idPro, idSi) {
+      let con = confirm('Bạn có chắc muốn xóa?');
+      console.log(idPro);
+      console.log(idSi);
+      if (con === true) {
+        let res = await cart.delete({ idProduct: idPro, idSize: idSi });
+        if (res.status === 200) {
+          this.getAll();
+        }
+      }
+    },
+  
+
+    async updateQuantity(idPro, idSi, e) {
+      let quanti = e.target.value;
+      const found = this.products.find(pro => pro.idProduct === idPro && pro.idSize === idSi);
+      if (found) {
+        found.quantity = quanti;
+      }
+
+      // console.log(quanti);
+      // let res = await cart.updateQuantity({ idProduct: idPro, idSize: idSi, quantity: quanti });
+      // if (res.status === 200) {
+      //   this.getAll();
+      // }
+    }
+  },
+  computed: {
+    Sum() {
+      return this.products.reduce((Sum, pro) => pro.price * pro.quantity + Sum, 0);
     }
   }
 }
@@ -542,4 +570,5 @@ td:last-child {
 
 th:last-child {
   text-align: right;
-}</style>
+}
+</style>
