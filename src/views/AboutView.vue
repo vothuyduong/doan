@@ -28,9 +28,9 @@
                         </div>
                     </li>
                     <li v-if="!this.username"><router-link :to="{ name: 'login' }">Đăng nhập</router-link></li>
+                    <li> <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
+                                height="30px" /></router-link>({{ this.quantityCart }})</li>
                 </ul>
-                <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
-                        height="30px" /></router-link>
             </nav>
         </div>
     </div>
@@ -43,7 +43,8 @@
             <p><b><u>1. Những lưu ý về sản phẩm quyên góp:</u></b></p>
             <p>- Tâm An ưu tiên quần áo từ 18-45 tuổi, đa dạng màu sắc và chất liệu.</p>
             <p>- Quần áo phải có nhãn hiệu, thuộc danh mục định giá sản phẩm trên website với số lượng không hạn chế.</p>
-            <p>- Quần áo không quá cũ, không rách, sờn, tuột chỉ, không có vết ố, không bị lem màu, không hư khóa, không đứt,
+            <p>- Quần áo không quá cũ, không rách, sờn, tuột chỉ, không có vết ố, không bị lem màu, không hư khóa, không
+                đứt,
                 thiếu cúc...</p>
             <p>- Ngoài quần áo Tâm An còn có thể nhận các sản phẩm khác nếu bạn cần Tâm An xử lý chúng.</p>
 
@@ -94,16 +95,18 @@
 </template>
   
 <script>
-
+import cart from '@/api/cart.js'
 export default {
     data() {
         return {
             username: '',
             displaynone: false,
+            quantityCart: '0'
         }
     },
     created() {
         this.getUsername();
+        this.getQuantity();
     },
     methods: {
         getUsername() {
@@ -117,6 +120,13 @@ export default {
             localStorage.removeItem("username");
             this.username = '';
         },
+        async getQuantity() {
+            this.quantityCart = 0;
+            if (this.username !== '') {
+                let rs = await cart.getQuantity();
+                this.quantityCart = rs.data;
+            }
+        }
     }
 };
 </script>
@@ -464,4 +474,5 @@ select:focus {
 
 input:focus {
     outline: none;
-}</style>
+}
+</style>

@@ -28,9 +28,9 @@
                         </div>
                     </li>
                     <li v-if="!this.username"><router-link :to="{ name: 'login' }">Đăng nhập</router-link></li>
+                    <li> <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
+                                height="30px" /></router-link>({{ this.quantityCart }})</li>
                 </ul>
-                <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
-                        height="30px" /></router-link>
             </nav>
         </div>
     </div>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="get-address" class="form-label">Thời gian lấy: </label>
-                    <input id="startDate" class="form-control" type="date" v-model="donation.getTime"/>
+                    <input id="startDate" class="form-control" type="date" v-model="donation.getTime" />
                 </div>
                 <div class="form-group">
                     <label for="decription">Mô tả: </label>
@@ -102,6 +102,7 @@
   
 <script>
 import dona from '@/api/donation.js'
+import cart from '@/api/cart.js'
 
 export default {
     data() {
@@ -113,14 +114,16 @@ export default {
                 "phone": "",
                 "getAddress": "",
                 "getTime": "",
-                "description":"",
+                "description": "",
                 "status": "Chờ xác nhận"
             },
-            message: ""
+            message: "",
+            quantityCart: '0'
         }
     },
     created() {
         this.getUsername();
+        this.getQuantity();
     },
     methods: {
         getUsername() {
@@ -140,6 +143,13 @@ export default {
                 this.message = "Thêm thông tin quyên góp thành công!";
             } else {
                 this.message = "Thêm thông tin quyên góp thất bại!";
+            }
+        },
+        async getQuantity() {
+            this.quantityCart = 0;
+            if (this.username !== '') {
+                let rs = await cart.getQuantity();
+                this.quantityCart = rs.data;
             }
         }
     }

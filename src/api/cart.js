@@ -21,11 +21,17 @@ export default {
             params: param
         }); 
     },
-    updateQuantity(param) {
+    updateQuantity(data) {
         return request({
             url: "http://localhost:5000/api/cart/update-quantity",
             method: "post",
-            params: param
+            data
+        }); 
+    },
+    getQuantity() {
+        return request({
+            url: "http://localhost:5000/api/cart/count",
+            method: "get",
         }); 
     }
 };

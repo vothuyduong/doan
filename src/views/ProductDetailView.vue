@@ -8,7 +8,7 @@
         <ul>
           <li><router-link :to="{ name: 'home' }">Trang chủ</router-link></li>
           <li>
-            <router-link :to="{ name: 'product' }">Sản phẩm</router-link>
+            <router-link :to="{ name: 'product' }" class="mau-chon">Sản phẩm</router-link>
           </li>
           <li>
             <router-link :to="{ name: 'about' }">Về chúng tôi</router-link>
@@ -28,9 +28,9 @@
             </div>
           </li>
           <li v-if="!this.username"><router-link :to="{ name: 'login' }">Đăng nhập</router-link></li>
+          <li> <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
+                height="30px" /></router-link>({{ this.quantityCart }})</li>
         </ul>
-        <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
-            height="30px" /></router-link>
       </nav>
     </div>
   </div>
@@ -43,11 +43,11 @@
       </div>
       <div class="col-6">
         <h1>{{ product.nameProduct }}</h1>
-        <h4>{{ product.priceMin }} - {{ product.priceMax }} VND</h4>
+        <h4>{{ costCurrency(product.priceMin) }} - {{ costCurrency(product.priceMax) }}</h4>
         <p><select v-model="this.size">
-          <option v-for="(size, index) in sizes" :key="index" :value="size.idSize">{{ size.nameSize }}</option>
-        </select></p>
-        Số lượng <input type="number" v-model="quantity"/>
+            <option v-for="(size, index) in sizes" :key="index" :value="size.idSize">{{ size.nameSize }}</option>
+          </select></p>
+        Số lượng <input type="number" v-model="quantity" />
         <p><a href="#" class="btn" @click="addCart()">Thêm vào giỏ hàng</a></p>
 
         <h3>Mô tả</h3>
@@ -65,7 +65,7 @@
           <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" class="size-image" />
           <div style="text-align: center;">
             <h4>{{ pro.nameProduct }}</h4>
-            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+            <p class="mau-chon">{{ costCurrency(pro.priceMin) }} - {{ costCurrency(pro.priceMax) }}</p>
           </div>
         </div>
       </div>
@@ -110,6 +110,8 @@ import product from '@/api/product.js'
 import size from '@/api/size.js'
 import cart from '@/api/cart.js'
 
+const formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+
 export default {
   data() {
     return {
@@ -126,13 +128,15 @@ export default {
       },
       sizes: [],
       size: "",
-      quantity: "1", 
+      quantity: "1",
+      quantityCart: '0'
     }
   },
   created() {
     this.getUsername();
     this.iniit();
     this.getListSize();
+    this.getQuantity();
   },
   methods: {
     getUsername() {
@@ -164,14 +168,24 @@ export default {
       this.product = dt.data;
     },
     async addCart() {
-      let res = await cart.save({"idProduct": this.product.idProduct, "idSize": this.size, "quantity": this.quantity});
+      let res = await cart.save({ "idProduct": this.product.idProduct, "idSize": this.size, "quantity": this.quantity });
       if (res.status === 200) {
         alert('Thêm vào giỏ hàng thành công!');
-      } else if(res.status === 401) {
+      } else if (res.status === 401) {
         alert('Bạn cần đăng nhập để thực hiện chức năng này!');
       } else {
         alert('Thêm vào giỏ hàng thất bại!');
       }
+    },
+    async getQuantity() {
+      this.quantityCart = 0;
+      if (this.username !== '') {
+        let rs = await cart.getQuantity();
+        this.quantityCart = rs.data;
+      }
+    },
+    costCurrency(pri) {
+      return formatter.format(pri);
     }
   }
 };

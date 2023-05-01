@@ -28,9 +28,9 @@
             </div>
           </li>
           <li v-if="!this.username"><router-link :to="{ name: 'login' }">Đăng nhập</router-link></li>
+          <li> <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
+                height="30px" /></router-link>({{ this.quantityCart }})</li>
         </ul>
-        <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
-            height="30px" /></router-link>
       </nav>
     </div>
   </div>
@@ -48,15 +48,16 @@
             <img :src="('data:image/jpeg;base64,' + item.base64)" alt="" />
             <div>
               <p>{{ item.nameProduct }}</p>
-              <small>Giá: {{ item.price }} VND</small><br />
+              <small>Giá: {{ costCurrency(item.price) }}</small><br />
               <a href="#" @click="del(item.idProduct, item.idSize)">Xóa</a>
             </div>
           </div>
         </td>
         <td>
-          <input type="number" :value="item.quantity" style="width: 60px;" @change="updateQuantity(item.idProduct, item.idSize, $event)"  />
+          <input type="number" :value="item.quantity" style="width: 60px;"
+            @change="updateQuantity(item.idProduct, item.idSize, $event)" min="1" max="100" />
         </td>
-        <td>{{ item.price * item.quantity }}</td>
+        <td>{{ costCurrency(item.price * item.quantity) }}</td>
       </tr>
     </table>
 
@@ -64,10 +65,12 @@
       <table>
         <tr>
           <td>Tổng cộng</td>
-          <td>{{ Sum }}</td>
+          <td>{{ costCurrency(Sum) }}</td>
         </tr>
         <tr>
-          <td></td>
+          <td>
+            <a class="btn" href="#" @click="saveChange()">Lưu</a>
+          </td>
           <td>
             <router-link class="btn" :to="{ name: 'product' }">Đặt hàng &#8594;</router-link>
           </td>
@@ -117,17 +120,21 @@
 <script>
 import cart from '@/api/cart.js'
 
+const formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+
 export default {
   data() {
     return {
       username: '',
       displaynone: false,
       products: [],
+      quantityCart: '0'
     }
   },
   created() {
     this.getUsername();
     this.getAll();
+    this.getQuantity();
   },
   methods: {
     getUsername() {
@@ -156,20 +163,36 @@ export default {
         }
       }
     },
-  
-
-    async updateQuantity(idPro, idSi, e) {
+    updateQuantity(idPro, idSi, e) {
       let quanti = e.target.value;
+      if (quanti < 1 || quanti > 100) {
+        alert('Số lượng nhập không hợp lệ');
+        return;
+      }
       const found = this.products.find(pro => pro.idProduct === idPro && pro.idSize === idSi);
       if (found) {
         found.quantity = quanti;
       }
-
-      // console.log(quanti);
-      // let res = await cart.updateQuantity({ idProduct: idPro, idSize: idSi, quantity: quanti });
-      // if (res.status === 200) {
-      //   this.getAll();
-      // }
+    },
+    async saveChange() {
+      let proo = this.products;
+      let res = await cart.updateQuantity({ "detail": proo });
+      if (res.status === 200) {
+        alert('Lưu thành công!');
+      } else {
+        alert('Lưu thất bại!');
+      }
+      this.getQuantity();
+    },
+    async getQuantity() {
+      this.quantityCart = 0;
+      if (this.username !== '') {
+        let rs = await cart.getQuantity();
+        this.quantityCart = rs.data;
+      }
+    },
+    costCurrency(pri) {
+      return formatter.format(pri);
     }
   },
   computed: {

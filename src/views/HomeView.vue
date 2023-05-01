@@ -5,6 +5,7 @@
         <div class="logo">
           <img src="../assets/logo.png" alt="" width="125px" />
         </div>
+
         <nav>
           <ul>
             <li><router-link :to="{ name: 'home' }" class="mau-chon">Trang chủ</router-link></li>
@@ -29,10 +30,11 @@
               </div>
             </li>
             <li v-if="!this.username"><router-link :to="{ name: 'login' }">Đăng nhập</router-link></li>
+            <li> <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
+                  height="30px" /></router-link>({{ this.quantityCart }})</li>
           </ul>
-          <router-link :to="{ name: 'cart' }"><img src="../assets/cart.png" alt="" width="30px"
-              height="30px" /></router-link>
         </nav>
+
       </div>
       <div class="row">
         <div class="col-2">
@@ -91,7 +93,7 @@
           <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 260px; height: 300px;" />
           <div style="text-align: center;">
             <h4>{{ pro.nameProduct }}</h4>
-            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+            <p class="mau-chon">{{ costCurrency(pro.priceMin) }} - {{ costCurrency(pro.priceMax) }}</p>
           </div>
         </div>
       </div>
@@ -106,7 +108,7 @@
           <img :src="('data:image/jpeg;base64,' + pro.base64)" alt="" style="width: 260px; height: 300px;" />
           <div style="text-align: center;">
             <h4>{{ pro.nameProduct }}</h4>
-            <p class="mau-chon">{{ pro.priceMin }} - {{ pro.priceMax }} VND</p>
+            <p class="mau-chon">{{ costCurrency(pro.priceMin) }} - {{ costCurrency(pro.priceMax) }}</p>
           </div>
         </div>
       </div>
@@ -149,18 +151,23 @@
 <script>
 import product from '@/api/product.js'
 import router from '@/router/index.js'
+import cart from '@/api/cart.js'
+
+const formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
 
 export default {
   data() {
     return {
       username: '',
       displaynone: false,
-      productNews: []
+      productNews: [],
+      quantityCart: '0'
     }
   },
   created() {
     this.getUsername();
     this.getProductNew();
+    this.getQuantity();
   },
   methods: {
     getUsername() {
@@ -180,6 +187,16 @@ export default {
     },
     getDetail(idProduct) {
       router.push({ name: 'product-detail', params: { id: idProduct } });
+    },
+    async getQuantity() {
+      this.quantityCart = 0;
+      if (this.username !== '') {
+        let rs = await cart.getQuantity();
+        this.quantityCart = rs.data;
+      }
+    },
+    costCurrency(pri) {
+      return formatter.format(pri);
     }
   }
 };
