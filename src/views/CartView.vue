@@ -72,7 +72,7 @@
             <a class="btn" href="#" @click="saveChange()">Lưu</a>
           </td>
           <td>
-            <router-link class="btn" :to="{ name: 'product' }">Đặt hàng &#8594;</router-link>
+            <router-link class="btn" :to="{ name: 'orders' }">Đặt hàng &#8594;</router-link>
           </td>
         </tr>
       </table>

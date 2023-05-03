@@ -7,6 +7,7 @@ import ProductDetailView from '@/views/ProductDetailView.vue'
 import CartView from '@/views/CartView.vue'
 import AboutView from '@/views/AboutView.vue'
 import DonationView from '@/views/DonationView.vue'
+import OrderView from '@/views/OrderView.vue'
 
 import AdminView from '@/views/AdminView.vue'
 import AdminHomeView from '@/components/AdminHomeView.vue'
@@ -69,6 +70,12 @@ const routes = [
     path: '/themthongtinquyengop',
     name: 'donation',
     component: DonationView
+  },
+
+  {
+    path: '/dathang',
+    name: 'orders',
+    component: OrderView
   },
 
   {

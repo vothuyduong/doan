@@ -59,6 +59,18 @@ export default {
   },
   methods: {
     async register() {
+      if(this.user.phone.length > 11) {
+        this.messager = "Số điện thoại không hợp lệ!";
+        return;
+      }
+      if(this.user.username.length > 30) {
+        this.messager = "Tên đăng nhập không vượt quá 30 kí tự!";
+        return;
+      }
+      if(this.user.password.length > 50) {
+        this.messager = "Mật khẩu không vượt quá 50 kí tự!";
+        return;
+      }
       let response = await api.register(this.user);
       console.log(response);
       if (response.status === 500) {
