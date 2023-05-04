@@ -125,7 +125,7 @@ export default {
 
 <style scoped>
 .imgProductDetail {
-    width: 600px;
-    height: 500px;
+    width: 400px;
+    height: 300px;
 }
 </style>

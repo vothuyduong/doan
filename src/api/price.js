@@ -27,5 +27,11 @@ export default {
             method: "delete",
             params: param
         });
+    },
+    countPri() {
+        return request({
+            url: "http://localhost:5000/api/price/count",
+            method: "get",
+        });
     }
 };

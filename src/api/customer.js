@@ -15,4 +15,10 @@ export default {
             data
         }); 
     },
+    getCount() {
+        return request({
+            url: "http://localhost:5000/api/customer/count",
+            method: "get",
+        }); 
+    }
 };

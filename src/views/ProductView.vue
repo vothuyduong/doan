@@ -38,7 +38,7 @@
     <div class="smalll-container">
         <div class="row" style="margin-bottom: 30px;">
             <div class="col-6">
-                <h2>Tất cả sản phẩm</h2>
+                <h3>TẤT CẢ SẢN PHẨM</h3>
             </div>
             <div class="col-6">
                 <div class="input-group rounded">

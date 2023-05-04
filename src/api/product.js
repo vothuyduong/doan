@@ -64,5 +64,11 @@ export default {
             method: "get",
             params: param
         }); 
+    },
+    getCount() {
+        return request({
+            url: "http://localhost:5000/api/product/count",
+            method: "get",
+        }); 
     }
 };

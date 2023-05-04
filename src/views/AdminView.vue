@@ -138,8 +138,8 @@ export default {
 }
 
 #nav-admin ul li {
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-top: 15px;
     border-bottom: 1px solid white;
     display: block;
 }

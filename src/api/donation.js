@@ -8,4 +8,10 @@ export default {
             data
         }); 
     },
+    countDo() {
+        return request({
+            url: "http://localhost:5000/api/donation-form/count",
+            method: "get",
+        }); 
+    }
 };

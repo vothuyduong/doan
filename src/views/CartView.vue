@@ -35,6 +35,12 @@
     </div>
   </div>
 
+  <div class="title-detail">
+    <center>
+      <h3>GIỎ HÀNG</h3>
+    </center>
+  </div>
+
   <div v-if="products.length > 0" class="small-container cart-page" style="min-height: 400px;">
     <table>
       <tr>
@@ -154,8 +160,6 @@ export default {
     },
     async del(idPro, idSi) {
       let con = confirm('Bạn có chắc muốn xóa?');
-      console.log(idPro);
-      console.log(idSi);
       if (con === true) {
         let res = await cart.delete({ idProduct: idPro, idSize: idSi });
         if (res.status === 200) {
@@ -288,7 +292,7 @@ p {
 }
 
 .btn:hover {
-  background: #563434;
+    background: #ff523b;
 }
 
 .header {

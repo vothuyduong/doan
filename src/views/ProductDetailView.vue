@@ -35,6 +35,12 @@
     </div>
   </div>
 
+  <div class="title-detail">
+    <center>
+      <h3>CHI TIẾT SẢN PHẨM</h3>
+    </center>
+  </div>
+
   <div class="small-container single-product">
     <div class="row">
       <div class="col-6">
@@ -43,15 +49,24 @@
       </div>
       <div class="col-6">
         <h1>{{ product.nameProduct }}</h1>
-        <h4>{{ costCurrency(product.priceMin) }} - {{ costCurrency(product.priceMax) }}</h4>
-        <p><select v-model="this.size">
-            <option v-for="(size, index) in sizes" :key="index" :value="size.idSize">{{ size.nameSize }}</option>
-          </select></p>
-        Số lượng <input type="number" v-model="quantity" />
-        <p><a href="#" class="btn" @click="addCart()">Thêm vào giỏ hàng</a></p>
-
-        <h3>Mô tả</h3>
-        <p>{{ product.description }}</p>
+        <h4 class="mau-chon">{{ costCurrency(product.priceMin) }} - {{ costCurrency(product.priceMax) }}</h4>
+        <div class="row">
+          <p style="color: black">Mô tả</p>
+          <p>{{ product.description }}</p>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <p style="color: black">Kích thước <select v-model="this.size">
+                <option v-for="(size, index) in sizes" :key="index" :value="size.idSize">{{ size.nameSize }}</option>
+              </select></p>
+          </div>
+          <div class="col-6">
+            <p style="color: black">Số lượng</p><input type="number" v-model="quantity" min="1" max="100"/>
+          </div>
+        </div>
+        <div class="row">
+          <p><a href="#" class="btn" @click="addCart()">Thêm vào giỏ hàng</a></p>
+        </div>
       </div>
     </div>
   </div>
@@ -168,6 +183,10 @@ export default {
       this.product = dt.data;
     },
     async addCart() {
+      if(this.size === '') {
+        alert('Bạn cần chọn kích thước!');
+        return;
+      }
       let res = await cart.save({ "idProduct": this.product.idProduct, "idSize": this.size, "quantity": this.quantity });
       if (res.status === 200) {
         alert('Thêm vào giỏ hàng thành công!');
@@ -194,6 +213,12 @@ export default {
 <style scoped>
 .mar-10 {
   margin-top: 50px;
+}
+
+select { width: 10em; }
+
+input[type=number] {
+  width: 100%;
 }
 
 .logo img {
@@ -276,7 +301,7 @@ p {
 
 .btn {
   display: inline-block;
-  background: #ff523b;
+  background: #7ed957;
   color: #fff;
   padding: 8px 30px;
   margin: 30px 0;
@@ -285,7 +310,7 @@ p {
 }
 
 .btn:hover {
-  background: #563434;
+    background: #ff523b;
 }
 
 .header {
@@ -523,11 +548,14 @@ select:focus {
 }
 
 .single-product input {
-  width: 50px;
+  width: 180px;
   height: 40px;
   padding-left: 10px;
   font-size: 20px;
   margin-right: 10px;
+  margin-bottom: 10px;
+  padding-top: 21px;
+  padding-bottom: 21px;
   border: 1px solid #ff523b;
 }
 

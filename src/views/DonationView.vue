@@ -37,7 +37,7 @@
 
     <div class="small-container" style="margin-bottom: 20px;">
         <div class="title-2">
-            <h2 style="margin: 50px 0px;">Thêm thông tin quyên góp</h2>
+            <h3 style="margin: 50px 0px;">THÊM THÔNG TIN QUYÊN GÓP</h3>
         </div>
         <div class="row">
             <p style="color: red;">{{ this.message }}</p>

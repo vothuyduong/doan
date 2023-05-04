@@ -40,7 +40,7 @@
         <div class="col-2">
           <h1>
             Hãy đến với chúng tôi<br />
-            <span class="mau-chon"> Tủ quần áo TÂM AN</span>
+            Tủ quần áo <span class="mau-chon">TÂM AN</span>
           </h1>
           <p>
             Tuy ở đây toàn đồ đã qua sử dụng nhưng chúng tôi đảm bảo chất lượng
@@ -58,7 +58,7 @@
 
   <div class="testimonial">
     <div class="small-container">
-      <h2 class="title">Hoạt động chính</h2>
+      <h3 class="title">HOẠT ĐỘNG CHÍNH</h3>
       <div class="row">
         <div class="col-3">
           <h3>THU GOM QUẦN ÁO</h3>
@@ -86,7 +86,7 @@
   </div>
 
   <div class="small-container">
-    <h2 class="title">Sản phẩm nổi bật</h2>
+    <h3 class="title">SẢN PHẨM NỔI BẬT</h3>
     <div class="row">
       <div class="col-4" v-for="(pro, index) in productNews" :key="index">
         <div v-if="index <= 3" @click="getDetail(pro.idProduct)">
@@ -101,7 +101,7 @@
   </div>
 
   <div class="small-container">
-    <h2 class="title">Sản phẩm mới nhất</h2>
+    <h3 class="title">SẢN PHẨM MỚI NHẤT</h3>
     <div class="row">
       <div class="col-4" v-for="(pro, index) in productNews" :key="index">
         <div @click="getDetail(pro.idProduct)">
@@ -278,8 +278,9 @@ p {
 }
 
 .btn:hover {
-  background: #563434;
+    background: #ff523b;
 }
+
 
 .logo img {
   width: 125px;

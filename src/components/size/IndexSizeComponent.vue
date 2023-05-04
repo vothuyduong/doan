@@ -39,14 +39,6 @@
                         </tr>
                     </tbody>
                 </table>
-
-                <div class="page-itity d-flex justify-content-sm-end align-items-center">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link text-dark" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#"></a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">Next</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>

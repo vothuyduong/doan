@@ -4,45 +4,33 @@
             <h4>Thống kê</h4>
         </div>
 
-        <div class="content-main mx-sm-4">
+        <div class="content-main mx-sm-4" style="width: 1100px; margin-left: 30px;">
             <div class="d-sm-flex justify-content-sm-between">
                 <div class="content-o p-4 bg-white rounded shadow mb-3 mb-sm-0 row">
-                    <div class="text-cont col-10">
+                    <div class="text-cont col-12">
                         <p>Đơn quyên góp</p>
-                        <p>23</p>
-                    </div>
-                    <div class="text-icon col-2">
-                        <i class="fa-solid fa-dollar-sign fontsize-30"></i>
+                        <center><p>{{ this.donation }}</p></center>
                     </div>
                 </div>
 
                 <div class="content-o p-4 bg-white rounded shadow mb-3 mb-sm-0 row">
-                    <div class="text-cont col-10">
-                        <p>Doanh thu</p>
-                        <p>100</p>
-                    </div>
-                    <div class="text-icon col-2">
-                        <i class="fa-solid fa-dollar-sign fontsize-30"></i>
+                    <div class="text-cont col-12">
+                        <p>Khách hàng</p>
+                        <center><p>{{ this.customer }}</p></center>
                     </div>
                 </div>
 
                 <div class="content-o p-4 bg-white rounded shadow mb-3 mb-sm-0 row">
-                    <div class="text-cont col-10">
-                        <p>Số lượng người cho</p>
-                        <p>34</p>
-                    </div>
-                    <div class="text-icon col-2">
-                        <i class="fa-solid fa-dollar-sign fontsize-30"></i>
+                    <div class="text-cont col-12">
+                        <p>Loại sản phẩm</p>
+                        <center><p>{{ this.typePro }}</p></center>
                     </div>
                 </div>
 
                 <div class="content-o p-4 bg-white rounded shadow mb-3 mb-sm-0 row">
-                    <div class="text-cont col-10">
+                    <div class="text-cont col-12">
                         <p>Số lượng sản phẩm</p>
-                        <p>4</p>
-                    </div>
-                    <div class="text-icon col-2">
-                        <i class="fa-solid fa-dollar-sign fontsize-30"></i>
+                        <center><p>{{ this.product }}</p></center>
                     </div>
                 </div>
 
@@ -51,8 +39,47 @@
     </div>
 </template>
     
-<script setup>
+<script>
+import customer from '@/api/customer.js'
+import dona from '@/api/donation.js'
+import product from '@/api/product.js'
+import price from '@/api/price.js'
 
+export default {
+
+    data() {
+        return {
+            "customer": "",
+            "donation": "",
+            "typePro": "",
+            "product": ""
+        };
+    },
+    created() {
+        this.countCustomer();
+        this.countDona();
+        this.countPro();
+        this.countPri();
+    },
+    methods: {
+        async countCustomer() {
+            let res = await customer.getCount();
+            this.customer = res.data;
+        },
+        async countDona() {
+            let res = await dona.countDo();
+            this.donation = res.data;
+        },
+        async countPro() {
+            let res = await product.getCount();
+            this.typePro = res.data;
+        },
+        async countPri() {
+            let res = await price.countPri();
+            this.product = res.data;
+        }
+    },
+};
 </script>
     
 <style scoped>
@@ -125,4 +152,5 @@ svg,
 
 .form-label {
     font-weight: 600;
-}</style>
+}
+</style>
